@@ -1,0 +1,10 @@
+you need the STM32F4 library and source in ../../
+you need the arm-none-eabi-gcc compiler
+
+to compile type:
+make
+
+to flash type:
+make flash
+
+/dev/ttyACM0 can be used by any terminal programm
