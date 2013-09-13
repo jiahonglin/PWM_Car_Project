@@ -76,24 +76,7 @@ int main(void)
     SystemInit();
     
     RCC_AHB1PeriphClockCmd(  RCC_AHB1Periph_GPIOD , ENABLE );
-    //RCC_APB1PeriphClockCmd( RCC_APB1Periph_GPIOD, ENABLE );
-    /*
-    GPIO_InitTypeDef GPIO_InitStructure;
     
-    GPIO_PinAFConfig(GPIOD, GPIO_PinSource6, GPIO_AF_TIM3);
-    GPIO_PinAFConfig(GPIOD, GPIO_PinSource8, GPIO_AF_TIM3);
-    GPIO_PinAFConfig(GPIOD, GPIO_PinSource9, GPIO_AF_TIM3);
-    //GPIO_PinAFConfig(GPIOD, GPIO_PinSource15, GPIO_AF_TIM4);
-    
-    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_6 | GPIO_Pin_8 | GPIO_Pin_9;
-    GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;            // Alt Function - Push Pull
-    GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
-    GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;//100
-    GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
-    GPIO_Init( GPIOD, &GPIO_InitStructure ); 
-    */
-    //int orient = 0;
-    // ( orient = 0 speed-up  ) ( orient= 1 speed-down )
     GPIO_PIN_INIT();
 
     while(1)
