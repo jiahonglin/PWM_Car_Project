@@ -10,6 +10,8 @@
 
 #Developer's Note
 
+ * 2013/09/17 Implement Go() function
+
  * 2013/09/12  Finish 3 basic functions to control ONE motor
  
    - Go forward
@@ -22,9 +24,15 @@
       
        3V              ENA         Always enable motor A
        
+       3V              ENB         Always enable motor B
+       
        PD6             in1         in1 control forward rotation
        
        PD8             in2         in2 control backward rotation  
+       
+       PD10            in3         in3 control forward rotation
+       
+       PD11            in4         in4 control backward rotation  
        
        GND             GND         common ground
        
