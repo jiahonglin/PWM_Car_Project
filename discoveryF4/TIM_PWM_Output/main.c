@@ -104,21 +104,21 @@ void GPIO_PIN_INIT(void){
 /**
  * @brief Control motors of wheels.
  * @param duration The count of PWM cycles, which is Delay(1000).
- * @param duty_left The duty cycle of left wheels, in range [0, 100].
- * @param duty_right The duty cycle of right wheels, in range [0, 100].
+ * @param duty_left The duty cycle of left wheels, in range [-100, 100].
+ * @param duty_right The duty cycle of right wheels, in range [-100, 100].
  */
 void go(uint32_t duration, int16_t duty_left, int16_t duty_right)
 {
   uint32_t delay[5];
-  int bit[2], l=0, r=1, i=4;
+  uint16_t bit[2], l=0, r=1, i=4;
 
-  if(duty_left<duty_right) l=1, r=0;
+  if( ABS(duty_left) < ABS(duty_right)) l=1, r=0;
 
-  delay[l]=1000*(100-ABS(duty_left))/2;
+  delay[l]=1000*((100-ABS(duty_left))/2)/100;
   bit[l]= duty_left<0 ? GPIO_Pin_11 : GPIO_Pin_10;
   delay[3-l]=1000-delay[l];
 
-  delay[r]=1000*(100-ABS(duty_right))/2;
+  delay[r]=1000*((100-ABS(duty_right))/2)/100;
   bit[r]= duty_right<0 ? GPIO_Pin_8 : GPIO_Pin_6;
   delay[3-r]=1000-delay[r];
 
@@ -160,11 +160,7 @@ void Car_Test(void){
 }
 
 void Car_Test2(void){
-   go(5000, 50, 50);
-
-   go(5000, 75, 50);
-
-   go(5000, 50, 75);
+   go(5000,-76,50);
 
 }
 

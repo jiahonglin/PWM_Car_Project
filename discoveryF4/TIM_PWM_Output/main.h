@@ -51,7 +51,7 @@
 #define SPI_MOSI_AF                   GPIO_AF_SPI2
 
 /* Exported macro ------------------------------------------------------------*/
-#define ABS(x)         (x < 0) ? (-x) : x
+#define ABS(x)         ((x < 0) ? (-x) : x)
 #define MAX(a,b)       (a < b) ? (b) : a
 /* Exported functions ------------------------------------------------------- */
 void TimingDelay_Decrement(void);
