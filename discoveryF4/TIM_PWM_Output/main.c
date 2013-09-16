@@ -23,7 +23,6 @@
 #include "usbd_hid_core.h"
 #include "usbd_usr.h"
 #include "usbd_desc.h"
-
 //Library config for this project!!!!!!!!!!!
 #include "stm32f4xx_conf.h"
 
@@ -91,15 +90,50 @@ void GPIO_PIN_INIT(void){
     
     GPIO_PinAFConfig(GPIOD, GPIO_PinSource6, GPIO_AF_TIM3);
     GPIO_PinAFConfig(GPIOD, GPIO_PinSource8, GPIO_AF_TIM3);
-    GPIO_PinAFConfig(GPIOD, GPIO_PinSource9, GPIO_AF_TIM3);
+    GPIO_PinAFConfig(GPIOD, GPIO_PinSource10, GPIO_AF_TIM3);
+    GPIO_PinAFConfig(GPIOD, GPIO_PinSource11, GPIO_AF_TIM3);
     
-    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_6 | GPIO_Pin_8 | GPIO_Pin_9;
+    GPIO_InitStructure.GPIO_Pin =  GPIO_Pin_6 | GPIO_Pin_8 | GPIO_Pin_10 | GPIO_Pin_11;
     GPIO_InitStructure.GPIO_Mode = GPIO_Mode_OUT;            // Alt Function - Push Pull
     GPIO_InitStructure.GPIO_OType = GPIO_OType_PP;
     GPIO_InitStructure.GPIO_Speed = GPIO_Speed_100MHz;//100
     GPIO_InitStructure.GPIO_PuPd = GPIO_PuPd_UP;
     GPIO_Init( GPIOD, &GPIO_InitStructure ); 
 }
+
+/**
+ * @brief Control motors of wheels.
+ * @param duration The count of PWM cycles, which is Delay(1000).
+ * @param duty_left The duty cycle of left wheels, in range [0, 100].
+ * @param duty_right The duty cycle of right wheels, in range [0, 100].
+ */
+void go(uint32_t duration, int16_t duty_left, int16_t duty_right)
+{
+  uint32_t delay[5];
+  int bit[2], l=0, r=1, i=4;
+  if(duty_left<duty_right) l=01, r=0;
+  delay[l]=1000*(100-ABS(duty_left))/2;
+  bit[l]= duty_left<0 ? GPIO_Pin_11 : GPIO_Pin_10;
+  delay[3-l]=1000-delay[l];
+  delay[r]=1000*(100-ABS(duty_right))/2;
+  bit[r]= duty_right<0 ? GPIO_Pin_8 : GPIO_Pin_6;
+  delay[3-r]=1000-delay[r];
+  for(delay[4]=1000; i>0; i--) delay[i]-=delay[i-1];
+  GPIO_ResetBits(GPIOD , GPIO_Pin_6|GPIO_Pin_8|GPIO_Pin_10|GPIO_Pin_11);
+  for(i=0; i<duration; i++){
+    Delay(delay[0]);
+    GPIO_SetBits(GPIOD , bit[0]);
+    Delay(delay[1]);
+    GPIO_SetBits(GPIOD , bit[1]);
+    Delay(delay[2]);
+    GPIO_ResetBits(GPIOD , bit[1]);
+    Delay(delay[3]);
+    GPIO_ResetBits(GPIOD , bit[0]);
+    Delay(delay[4]);
+  }
+}
+
+
 
 void Car_Test(void){
   Car_forward(1000);
@@ -113,6 +147,15 @@ void Car_Test(void){
 
   Car_Stop(1000);
   Delay(10000);
+}
+
+void Car_Test2(void){
+   go(50, 50, 50);
+
+   go(75, 50, 50);
+
+   go(100, 50, 50);
+
 }
 
 
