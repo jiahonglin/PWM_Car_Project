@@ -80,7 +80,7 @@ int main(void)
 
     while(1)
     {
-      Car_Test();
+      Car_Test2();
     }
     
 }
@@ -111,23 +111,33 @@ void go(uint32_t duration, int16_t duty_left, int16_t duty_right)
 {
   uint32_t delay[5];
   int bit[2], l=0, r=1, i=4;
-  if(duty_left<duty_right) l=01, r=0;
+
+  if(duty_left<duty_right) l=1, r=0;
+
   delay[l]=1000*(100-ABS(duty_left))/2;
   bit[l]= duty_left<0 ? GPIO_Pin_11 : GPIO_Pin_10;
   delay[3-l]=1000-delay[l];
+
   delay[r]=1000*(100-ABS(duty_right))/2;
   bit[r]= duty_right<0 ? GPIO_Pin_8 : GPIO_Pin_6;
   delay[3-r]=1000-delay[r];
+
   for(delay[4]=1000; i>0; i--) delay[i]-=delay[i-1];
+
   GPIO_ResetBits(GPIOD , GPIO_Pin_6|GPIO_Pin_8|GPIO_Pin_10|GPIO_Pin_11);
+
   for(i=0; i<duration; i++){
     Delay(delay[0]);
+
     GPIO_SetBits(GPIOD , bit[0]);
     Delay(delay[1]);
+
     GPIO_SetBits(GPIOD , bit[1]);
     Delay(delay[2]);
+
     GPIO_ResetBits(GPIOD , bit[1]);
     Delay(delay[3]);
+
     GPIO_ResetBits(GPIOD , bit[0]);
     Delay(delay[4]);
   }
@@ -150,11 +160,11 @@ void Car_Test(void){
 }
 
 void Car_Test2(void){
-   go(50, 50, 50);
+   go(5000, 50, 50);
 
-   go(75, 50, 50);
+   go(5000, 75, 50);
 
-   go(100, 50, 50);
+   go(5000, 50, 75);
 
 }
 

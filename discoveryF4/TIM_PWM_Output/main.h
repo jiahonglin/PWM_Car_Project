@@ -59,6 +59,7 @@ void Delay(__IO uint32_t nTime);
 void GPIO_PIN_INIT();
 void Fail_Handler(void);
 void Car_Test();
+void Car_Test2();
 void Car_forward(int PWM_Delay);
 void Car_Backward(int PWM_Delay);
 void Car_Stop(int Stop_Delay);
